@@ -1,5 +1,6 @@
 "use client";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
+import { ImageUploadField } from "./image-upload-field";
 import { saveSiteSettings } from "@/lib/actions/cms";
 import type { SiteConfig } from "@/lib/content/types";
 import { SaveNotice } from "./ui";
@@ -7,11 +8,11 @@ import { SaveNotice } from "./ui";
 const groups: { title: string; description: string; fields: { name: keyof SiteConfig; label: string; multi?: boolean; image?: boolean }[] }[] = [
   { title: "Hero", description: "The first impression on your homepage.", fields: [
     { name: "hero_eyebrow", label: "Eyebrow" }, { name: "hero_heading", label: "Heading" },
-    { name: "hero_description", label: "Description", multi: true }, { name: "hero_image", label: "Hero image URL", image: true }
+    { name: "hero_description", label: "Description", multi: true }, { name: "hero_image", label: "Hero image", image: true }
   ] },
   { title: "Story & About", description: "Shared by the homepage and About page.", fields: [
     { name: "introduction_eyebrow", label: "Eyebrow" }, { name: "introduction_heading", label: "Heading" },
-    { name: "introduction_body", label: "Studio story", multi: true }, { name: "story_image", label: "Story image URL", image: true }
+    { name: "introduction_body", label: "Studio story", multi: true }, { name: "story_image", label: "Story image", image: true }
   ] },
   { title: "About page banner", description: "The introduction visitors see when opening the About page.", fields: [
     { name: "about_page_eyebrow", label: "Eyebrow" }, { name: "about_page_heading", label: "Heading" },
@@ -55,16 +56,27 @@ const groups: { title: string; description: string; fields: { name: keyof SiteCo
 
 export function SettingsEditor({ config }: { config: SiteConfig }) {
   const [state, action, pending] = useActionState(saveSiteSettings, { message: "", error: "" });
-  return <form action={action} className="cms-stack">
+  const [uploadingFields, setUploadingFields] = useState<Record<string, boolean>>({});
+  const uploading = Object.values(uploadingFields).some(Boolean);
+  return <form action={action} className="cms-stack" onSubmit={event => { if (uploading) event.preventDefault(); }}>
     {groups.map(group => <section className="cms-surface" key={group.title}>
       <div className="cms-section-heading"><h2>{group.title}</h2><p>{group.description}</p></div>
-      <div className="cms-fields">{group.fields.map(field => <label className="cms-field" key={field.name}>
-        <span>{field.label}</span>
-        {field.multi ? <textarea name={field.name} rows={3} defaultValue={config[field.name]} required={field.name !== "contact_email"} />
-          : <input name={field.name} type={field.name === "contact_email" ? "email" : "text"} defaultValue={config[field.name]} required={field.name !== "contact_email" && field.name !== "contact_phone"} />}
-        {field.image && <small>Upload in Media Library, then paste the public URL here.</small>}
-      </label>)}</div>
+      <div className="cms-fields">{group.fields.map(field => field.image
+        ? <ImageUploadField
+            key={field.name}
+            name={field.name}
+            label={field.label}
+            initialValue={config[field.name]}
+            required
+            onUploadingChange={busy => setUploadingFields(previous => ({ ...previous, [field.name]: busy }))}
+          />
+        : <label className="cms-field" key={field.name}>
+            <span>{field.label}</span>
+            {field.multi ? <textarea name={field.name} rows={3} defaultValue={config[field.name]} required={field.name !== "contact_email"} />
+              : <input name={field.name} type={field.name === "contact_email" ? "email" : "text"} defaultValue={config[field.name]} required={field.name !== "contact_email" && field.name !== "contact_phone"} />}
+          </label>
+      )}</div>
     </section>)}
-    <div className="cms-form-footer"><button className="btn btn-primary" disabled={pending} type="submit">{pending ? "Saving…" : "Publish site settings"}</button><SaveNotice state={state}/></div>
+    <div className="cms-form-footer"><button className="btn btn-primary" disabled={pending || uploading} type="submit">{pending ? "Saving…" : "Publish site settings"}</button><SaveNotice state={state}/></div>
   </form>;
 }
