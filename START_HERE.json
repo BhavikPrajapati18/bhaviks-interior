@@ -1,0 +1,8 @@
+{
+  "project": "Bhavik's Interior",
+  "phase": 2,
+  "notes": "Read README.md. Apply migrations 001 then 002 to a NEW Supabase project only.",
+  "studio": "/studio/login",
+  "includes": ["Responsive website", "Site content editor", "Services CRUD", "Projects CRUD", "FAQ CRUD", "Process CRUD", "Public marketing media library", "RLS policies"],
+  "legacyCredentialsUsed": false
+}
