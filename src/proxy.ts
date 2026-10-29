@@ -24,4 +24,4 @@ export async function proxy(request: NextRequest) {
   await supabase.auth.getUser();
   return response;
 }
-export const config = { matcher: ["/studio/:path*"] };
+export const config = { matcher: ["/studio/:path*", "/client/:path*", "/api/quotes/:path*"] };

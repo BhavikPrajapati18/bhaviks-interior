@@ -11,5 +11,5 @@ export default async function EditQuote({ params }: { params: Promise<{ id: stri
     supabase.from("client_quotes").select("*").eq("id", id).maybeSingle(), getAdminReferences()
   ]);
   if (!result.data) notFound();
-  return <><Link href="/studio/admin/quotes" className="cms-back">← Quotations</Link><CmsHeading title="Edit quotation" description="Shared quotes appear only in the assigned client's account."/><QuoteForm initial={result.data} clients={refs.clients} leads={refs.leads}/></>;
+  return <><Link href="/studio/admin/quotes" className="cms-back">← Quotations</Link><CmsHeading title="Edit quotation" description="Shared quotes appear only in the assigned client's account."/><p><a className="btn btn-outline" href={`/api/quotes/${id}/pdf`}>Download quotation PDF ↓</a></p><QuoteForm initial={result.data} clients={refs.clients} leads={refs.leads}/></>;
 }

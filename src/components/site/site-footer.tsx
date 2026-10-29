@@ -10,7 +10,7 @@ export function SiteFooter({ demo, email, phone, services = [] }: { demo?: boole
         <Link href="/contact" className="text-link" style={{ marginTop: 35 }}>Let&apos;s talk <ArrowUpRight size={16}/></Link>
       </div>
       <div><h4>Explore</h4><ul>
-        {[{ href:"/",label:"Home" },{ href:"/about",label:"Our approach" },{ href:"/services",label:"Services" },{ href:"/projects",label:"Projects" },{ href:"/contact",label:"Contact" }].map(l => <li key={l.href}><Link href={l.href}>{l.label}</Link></li>)}
+        {[{ href:"/",label:"Home" },{ href:"/about",label:"Our approach" },{ href:"/services",label:"Services" },{ href:"/projects",label:"Projects" },{ href:"/cities",label:"Cities" },{ href:"/journal",label:"Journal" },{ href:"/contact",label:"Contact" }].map(l => <li key={l.href}><Link href={l.href}>{l.label}</Link></li>)}
       </ul></div>
       <div><h4>What we do</h4><ul>{services.map(item => <li key={item.slug}><Link href={`/services/${item.slug}`}>{item.title}</Link></li>)}</ul>{email && <p className="footer-tagline"><a href={`mailto:${email}`}>{email}</a></p>}{phone && <p className="footer-tagline"><a href={`tel:${phone.replace(/[^+\d]/g, "")}`}>{phone}</a></p>}</div>
     </div>

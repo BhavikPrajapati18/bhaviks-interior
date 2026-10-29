@@ -6,7 +6,8 @@ const links = [
   ["/studio/admin/leads", "Leads"],
   ["/studio/admin/clients", "Clients"],
   ["/studio/admin/quotes", "Quotations"],
-  ["/studio/admin/projects", "Client projects"]
+  ["/studio/admin/projects", "Client projects"],
+  ["/studio/admin/notifications", "Notifications"]
 ];
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   await requireAdmin();

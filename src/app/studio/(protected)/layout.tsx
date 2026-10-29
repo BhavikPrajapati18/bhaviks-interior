@@ -7,6 +7,8 @@ const nav = [
   { href: "/studio/settings", label: "Site settings" },
   { href: "/studio/services", label: "Services" },
   { href: "/studio/projects", label: "Projects" },
+  { href: "/studio/cities", label: "City pages" },
+  { href: "/studio/journal", label: "Journal" },
   { href: "/studio/faqs", label: "FAQs" },
   { href: "/studio/process", label: "Our process" },
   { href: "/studio/media", label: "Media library" }

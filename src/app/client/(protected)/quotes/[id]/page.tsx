@@ -11,6 +11,7 @@ export default async function ClientQuoteDetail({ params }: { params: Promise<{ 
   const canRespond = data.status === "shared" && (!data.valid_until || data.valid_until >= new Date().toISOString().slice(0,10));
   return <><Link href="/client/quotes" className="cms-back">← All quotations</Link><h1 className="client-title">{data.title}</h1>
     <p className="client-lede">Review the scope and quote details below.</p>
+    <p><a className="btn btn-outline" href={`/api/quotes/${id}/pdf`}>Download quotation PDF ↓</a></p>
     <section className="client-panel client-quote-detail"><div className="client-meta"><span>Status: <strong>{data.status}</strong></span><span>Valid until: <strong>{humanDate(data.valid_until)}</strong></span></div>
       <div className="client-amount">{price(data.amount)}</div><p className="ops-preserve">{data.description || "No additional scope description."}</p>
       {canRespond && <div className="client-decision"><form action={respondToQuote}><input type="hidden" name="id" value={id}/><input type="hidden" name="decision" value="accepted"/><button className="btn btn-primary">Accept quotation</button></form>
