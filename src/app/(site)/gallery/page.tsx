@@ -1,9 +1,11 @@
 import Link from "next/link";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { getPublishedShowcase } from "@/lib/editorial";
 import { ShowcaseGrid } from "@/components/site/editorial-sections";
 
-export const metadata: Metadata = { title: "Gallery | Bhavik's Interior", description: "Explore the photographic and video gallery of Bhavik's Interior." };
+export const metadata = pageMetadata({ title: 'Gallery', description: "Explore the photographic and video gallery of Bhavik's Interior.", path: '/gallery' });
+
+
 export default async function GalleryPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
   const { type } = await searchParams;
   const category = type === "videos" ? "videos" : type === "photos" ? "photos" : "all";

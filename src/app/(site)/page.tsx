@@ -1,3 +1,4 @@
+import { canOptimizeImage } from "@/lib/image-source";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
@@ -5,15 +6,16 @@ import { ServiceCards, ProjectCards, FaqList } from "@/components/site/cards";
 import { SectionCTA } from "@/components/site/section-cta";
 import { getHomepageContent, getSiteConfig } from "@/lib/content/queries";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { getPublishedTestimonials, getFeaturedShowcase } from "@/lib/editorial";
 import { TestimonialsSection, ShowcasePreview } from "@/components/site/editorial-sections";
-export async function generateMetadata(): Promise<Metadata> { const config = await getSiteConfig(); return { title: { absolute: config.seo_title }, description: config.seo_description }; }
+export async function generateMetadata(): Promise<Metadata> { const config = await getSiteConfig(); return pageMetadata({ title: config.seo_title || "Bhavik's Interior", description: config.seo_description || "Thoughtful interiors shaped around the way you live.", path: "/", image: config.hero_image, imageAlt: config.hero_heading }); }
 
 export default async function HomePage() {
   const [{ config, services, projects, faqs, process, demo }, reviews, showcase] = await Promise.all([getHomepageContent(), getPublishedTestimonials(3), getFeaturedShowcase()]);
   return <>
     <section className="hero">
-      <Image className="hero-image" src={config.hero_image} alt="Warm contemporary interior with considered materials" fill priority sizes="100vw" unoptimized />
+      <Image className="hero-image" src={config.hero_image} alt="Warm contemporary interior with considered materials" fill priority sizes="100vw" unoptimized={!canOptimizeImage(config.hero_image)} />
       <div className="hero-content"><div className="container">
         <span className="eyebrow">{config.hero_eyebrow}</span>
         <h1 className="h1">{config.hero_heading}</h1>
@@ -23,7 +25,7 @@ export default async function HomePage() {
       <div className="hero-footer"><div className="container hero-footer-inner"><p>Thoughtful spaces / Timeless design</p><p className="scroll-hint">Explore below <ArrowDown size={17}/></p></div></div>
     </section>
     <section className="section"><div className="container story-layout">
-      <div className="story-image"><Image src={config.story_image} alt="Warm-toned contemporary interior with natural materials" fill sizes="(max-width: 800px) 100vw, 50vw" unoptimized style={{objectFit:"cover"}} /></div>
+      <div className="story-image"><Image src={config.story_image} alt="Warm-toned contemporary interior with natural materials" fill sizes="(max-width: 800px) 100vw, 50vw" unoptimized={!canOptimizeImage(config.story_image)} style={{objectFit:"cover"}} /></div>
       <div className="story-copy"><span className="eyebrow kicker">{config.introduction_eyebrow}</span>
         <h2 className="h2">{config.introduction_heading}</h2>
         <p className="body-text">{config.introduction_body}</p>

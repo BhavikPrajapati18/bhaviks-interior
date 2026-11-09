@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { ContactForm } from "@/components/site/contact-form";
 import { getSiteConfig } from "@/lib/content/queries";
-export const metadata: Metadata = { title: "Get in Touch", description: "Start a conversation about your interior design project." };
+
+export const metadata = pageMetadata({ title: 'Get in Touch', description: 'Start a conversation about your interior design project.', path: '/contact' });
+
 export default async function ContactPage() {
   const config = await getSiteConfig();
   return <><header className="page-header"><div className="container"><span className="eyebrow">{config.contact_page_eyebrow}</span><h1 className="h1">{config.contact_page_heading}</h1><p className="page-lead">{config.contact_page_description}</p></div></header>
