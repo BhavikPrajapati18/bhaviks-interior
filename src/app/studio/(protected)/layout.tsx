@@ -9,6 +9,9 @@ const nav = [
   { href: "/studio/projects", label: "Projects" },
   { href: "/studio/cities", label: "City pages" },
   { href: "/studio/journal", label: "Journal" },
+  { href: "/studio/testimonials", label: "Testimonials" },
+  { href: "/studio/team", label: "Team" },
+  { href: "/studio/showcase", label: "Gallery & videos" },
   { href: "/studio/faqs", label: "FAQs" },
   { href: "/studio/process", label: "Our process" },
   { href: "/studio/media", label: "Media library" }

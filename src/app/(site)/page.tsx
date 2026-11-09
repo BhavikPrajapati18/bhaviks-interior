@@ -5,10 +5,12 @@ import { ServiceCards, ProjectCards, FaqList } from "@/components/site/cards";
 import { SectionCTA } from "@/components/site/section-cta";
 import { getHomepageContent, getSiteConfig } from "@/lib/content/queries";
 import type { Metadata } from "next";
+import { getPublishedTestimonials, getFeaturedShowcase } from "@/lib/editorial";
+import { TestimonialsSection, ShowcasePreview } from "@/components/site/editorial-sections";
 export async function generateMetadata(): Promise<Metadata> { const config = await getSiteConfig(); return { title: { absolute: config.seo_title }, description: config.seo_description }; }
 
 export default async function HomePage() {
-  const { config, services, projects, faqs, process, demo } = await getHomepageContent();
+  const [{ config, services, projects, faqs, process, demo }, reviews, showcase] = await Promise.all([getHomepageContent(), getPublishedTestimonials(3), getFeaturedShowcase()]);
   return <>
     <section className="hero">
       <Image className="hero-image" src={config.hero_image} alt="Warm contemporary interior with considered materials" fill priority sizes="100vw" unoptimized />
@@ -38,6 +40,8 @@ export default async function HomePage() {
       {demo && <p className="preview-note" style={{marginTop:22}}>Concept visuals for layout preview — not completed client projects.</p>}
       <ProjectCards projects={projects.slice(0,4)} />
     </div></section>
+    <TestimonialsSection reviews={reviews}/>
+    <ShowcasePreview items={showcase}/>
     <section className="section dark-section"><div className="container">
       <div className="section-topline editorial-head" style={{borderColor:"#ffffff50"}}><div><span className="eyebrow kicker">{config.process_eyebrow}</span><h2 className="h2">{config.process_heading}</h2></div><p className="body-text">{config.process_description}</p></div>
       <div className="process-grid">{process.map((step, i) => <div className="process-step" key={step.id}><span className="num">{String(i+1).padStart(2,"0")} / {String(process.length).padStart(2,"0")}</span><h3>{step.title}</h3><p>{step.description}</p></div>)}</div>
